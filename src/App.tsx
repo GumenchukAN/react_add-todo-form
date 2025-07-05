@@ -53,15 +53,21 @@ export const App = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTitleError(!title);
+    setTitleError(!title.trim());
     setSelectedUserIdError(!selectedUserId);
+
+    if (!title.trim() || !selectedUserId) {
+      return;
+    }
+
+    const finalUser = users.find(user => user.id === +selectedUserId);
 
     const newPost: Post = {
       id: getNewId(posts),
       title: title,
       completed: false,
       userId: selectedUserId,
-      user: findUsers(selectedUserId),
+      user: finalUser,
     };
 
     addPost(newPost);
